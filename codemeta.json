@@ -1,0 +1,83 @@
+{
+    "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
+    "type": "SoftwareSourceCode",
+    "applicationCategory": "Bioengineering",
+    "author": [
+        {
+            "id": "https://orcid.org/0000-0001-8323-9815",
+            "type": "Person",
+            "affiliation": {
+                "type": "Organization",
+                "name": "University of Mogi das Cruzes"
+            },
+            "email": "marianavalerio566@gmail.com",
+            "familyName": "Valério",
+            "givenName": "Mariana"
+        },
+        {
+            "id": "https://orcid.org/0000-0002-1135-6446",
+            "type": "Person",
+            "affiliation": {
+                "type": "Organization",
+                "name": "Karlsruhe Institute of Technology"
+            },
+            "familyName": "Becker",
+            "givenName": "Silvia"
+        },
+        {
+            "id": "https://orcid.org/0000-0002-6584-0233",
+            "type": "Person",
+            "affiliation": {
+                "type": "Organization",
+                "name": "Karlsruhe Institute of Technology"
+            },
+            "familyName": "Houillon",
+            "givenName": "Marie"
+        },
+        {
+            "id": "https://orcid.org/0000-0002-2487-4744",
+            "type": "Person",
+            "affiliation": {
+                "type": "Organization",
+                "name": "Karlsruhe Institute of Technology"
+            },
+            "email": "axel.loewe@kit.edu",
+            "familyName": "Loewe",
+            "givenName": "Axel"
+        },
+        {
+            "id": "https://orcid.org/0000-0003-4766-8617",
+            "type": "Person",
+            "affiliation": {
+                "type": "Organization",
+                "name": "University of Mogi das Cruzes"
+            },
+            "email": "alessandrops@umc.br",
+            "familyName": "Silva",
+            "givenName": "Alessandro"
+        }
+    ],
+    "codeRepository": "https://github.com/Mariizero/ECGRATproject.git",
+    "dateCreated": "2024-10-31",
+    "datePublished": "2024-11-10",
+    "description": "This software calculates heart rate and cardiac variability from ECG of Wistar rats.",
+    "funder": {
+        "type": "Organization",
+        "name": "Deutscher Akademischer Austauschdienst"
+    },
+    "keywords": [
+        "Cardiac variability",
+        "Rat",
+        "Electrocardiogram",
+        "Tool"
+    ],
+    "license": "https://spdx.org/licenses/MIT",
+    "name": "ECG Rat",
+    "operatingSystem": [
+        "macOS",
+        "Windows"
+    ],
+    "programmingLanguage": "Python 3",
+    "version": "1.0.0",
+    "funding": "Daad_2024"
+}

@@ -1,0 +1,1181 @@
+WindowManager:
+    MainWindow:
+    ParameterWindow:
+    PlotWindow:
+    PoincareWindow:
+
+<MainWindow>:
+    name: "main"
+    on_size: root.on_size()
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    FloatLayout:
+        cols:1
+        size_hint: 1, 1       
+        canvas.before:
+            Color:
+                rgba: 1, 1, 1, 1 
+            Rectangle:
+                pos: self.pos
+                size: self.size
+                source: 'Screen1.png'  
+
+
+        Button:
+            id: Pressure
+            text: "  "
+            size_hint: 0.18,0.38
+            pos_hint: {"top":0.6, "x":0.55}
+            font_size: 20
+            background_color: 94/255, 80/255, 63/255, 30/255
+            background_normal: ''
+            disabled: False
+            on_release:
+                
+
+        Button:
+            id: ECG_btn
+            text: "   "
+            size_hint: 0.20,0.38
+            pos_hint: {"top":0.6, "x":0.75}
+            font_size: 20
+            background_color: 94/255, 80/255, 63/255, 27/255
+            background_normal: ''
+            disabled: False
+            on_release:
+                root.set_file_path()
+
+<ParameterWindow>:
+    name: "parameter"
+    on_size: root.on_size()
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    FloatLayout:
+        cols:1
+        size_hint: 1, 1       
+        canvas.before:
+            Color:
+                rgba: 1, 1, 1, 1 
+            Rectangle:
+                pos: self.pos
+                size: self.size
+                source: 'Screen2.png'  
+
+        Button:
+            id: Select_btn
+            text: "   "
+            size_hint: 0.12,0.2
+            pos_hint: {"top":0.59, "x":0.61}
+            font_size: 20  
+            background_color: 94/255, 80/255, 63/255, 2/255 
+            background_normal: ''
+            disabled: False
+            on_release:
+                root.abrir_seletor_arquivo()
+                #root.set_file_path()
+            
+        Button:
+            id: Back_btn
+            text: "   "
+            size_hint: 0.06,0.1
+            pos_hint: {"top":0.11, "x":0.02}
+            font_size: 20
+            background_color: 94/255, 80/255, 63/255, 5/255 
+            background_normal: ''
+            disabled: False
+            on_release:
+                root.back_path()
+
+        Button:
+            id: Info_btn
+            text: "   "
+            size_hint: 0.04,0.08
+            pos_hint: {"top":0.1, "x":0.94}
+            font_size: 20
+            background_color: 94/255, 80/255, 63/255, 5/255 
+            background_normal: ''
+            disabled: False
+            on_release:
+                #root.back_path()
+
+        TextInput:
+            id: sample_rate
+            size_hint: 0.16, 0.1     
+            pos_hint: {"top": 0.77, "x": 0.32}  
+            font_size: 40
+            multiline: False         
+            hint_text: "1000 Hz"
+            background_color: 225/255, 180/255, 193/255, 2/255
+            bold: True
+            italic: False
+            halign: 'center'         
+            valign: 'middle'          
+            padding: [0, (self.height - self.line_height) / 2]  
+
+        TextInput:
+            id: high_filter
+            size_hint: 0.16, 0.1     
+            pos_hint: {"top": 0.62, "x": 0.32}  
+            font_size: 40
+            multiline: False         
+            hint_text: "0.5 Hz"
+            background_color: 225/255, 180/255, 193/255, 2/255
+            bold: True
+            italic: False
+            halign: 'center'         
+            valign: 'middle'          
+            padding: [0, (self.height - self.line_height) / 2] 
+
+        TextInput:
+            id: low_filter
+            size_hint: 0.16, 0.1     
+            pos_hint: {"top": 0.47, "x": 0.32}  
+            font_size: 40
+            multiline: False         
+            hint_text: "100 Hz"
+            background_color: 225/255, 180/255, 193/255, 2/255
+            bold: True
+            italic: False
+            halign: 'center'         
+            valign: 'middle'          
+            padding: [0, (self.height - self.line_height) / 2] 
+
+        TextInput:
+            id: notch_filter
+            size_hint: 0.16, 0.1     
+            pos_hint: {"top": 0.32, "x": 0.32}  
+            font_size: 40
+            multiline: False         
+            hint_text: "50 Hz"
+            background_color: 225/255, 180/255, 193/255, 2/255
+            bold: True
+            italic: False
+            halign: 'center'         
+            valign: 'middle'          
+            padding: [0, (self.height - self.line_height) / 2] 
+        
+<PlotWindow>:
+    name: "plot"
+    on_size: root.on_size()
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    FloatLayout:
+        cols:1
+        size_hint: 1, 1       
+        canvas.before:
+            Color:
+                rgba: 1, 1, 1, 1 
+            Rectangle:
+                pos: self.pos
+                size: self.size
+                source: 'Screen3.png'  
+
+        BoxLayout:
+            id: ArdBox
+            pos_hint: {"top": 0.84, "x": 0.03}
+            size_hint: 0.6, 0.4
+            background_color: 225/255, 180/255, 193/255, 1
+            canvas.before:
+                Color:
+                    rgba: self.background_color
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+            color: 0, 0, 0, 1
+            bold: True
+            italic: False
+
+        Slider:
+            id: slider
+            min: 0
+            max: 1000  
+            value: 0
+            step: 1
+            pos_hint: {"top": 0.62, "x": 0.03}
+            size_hint_y: 0.4  
+            height: 50  
+            size_hint_x: 0.6   
+            on_value: 
+                root.update_graph()
+
+        Label:
+            id: eixox_label
+            text: "Time (ms)"
+            pos_hint: {"top":0.47, "x":0.28}
+            size_hint: 0.03, 0.03
+            font_size: 20
+            background_color: 225/255, 180/255, 193/255, 0
+            canvas.before:
+                Color:
+                    rgba: self.background_color
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+            color: 0, 0, 0, 1
+            bold: True
+            italic: False
+        
+        Label:
+            id: eixox_num1
+            text: "0 ------------------- 500"
+            pos_hint: {"top":0.49, "x":0.12}
+            size_hint: 0.03, 0.03
+            font_size: 20
+            background_color: 225/255, 180/255, 193/255, 0
+            canvas.before:
+                Color:
+                    rgba: self.background_color
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+            color: 0, 0, 0, 1
+            bold: True
+            italic: False
+
+        Label:
+            id: eixoy_label
+            text: "Amplitude (Hz)"
+            pos_hint: {"top":0.815, "x":0.06}
+            size_hint: 0.03, 0.03
+            font_size: 17
+            background_color: 225/255, 180/255, 193/255, 0
+            canvas.before:
+                Color:
+                    rgba: self.background_color
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+            color: 0, 0, 0, 1
+            bold: True
+            italic: False
+
+        Label:
+            id: eixoy_num1
+            text: "0"
+            pos_hint: {"top":0.605, "x":0.025}
+            size_hint: 0.03, 0.03
+            font_size: 20
+            background_color: 225/255, 180/255, 193/255, 0
+            canvas.before:
+                Color:
+                    rgba: self.background_color
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+            color: 0, 0, 0, 1
+            bold: True
+            italic: False
+            opacity: 1
+
+        Label:
+            id: eixoy_num2
+            text: "0.3"
+            pos_hint: {"top":0.66, "x":0.025}
+            size_hint: 0.03, 0.03
+            font_size: 20
+            background_color: 225/255, 180/255, 193/255, 0
+            canvas.before:
+                Color:
+                    rgba: self.background_color
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+            color: 0, 0, 0, 1
+            bold: True
+            italic: False
+            opacity: 1
+
+        Label:
+            id: eixoy_num3
+            text: "0.6"
+            pos_hint: {"top":0.72, "x":0.025}
+            size_hint: 0.03, 0.03
+            font_size: 20
+            background_color: 225/255, 180/255, 193/255, 0
+            canvas.before:
+                Color:
+                    rgba: self.background_color
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+            color: 0, 0, 0, 1
+            bold: True
+            italic: False
+            opacity: 1
+
+        Label:
+            id: eixoy_num4
+            text: "0.9"
+            pos_hint: {"top":0.775, "x":0.025}
+            size_hint: 0.03, 0.03
+            font_size: 20
+            background_color: 225/255, 180/255, 193/255, 0
+            canvas.before:
+                Color:
+                    rgba: self.background_color
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+            color: 0, 0, 0, 1
+            bold: True
+            italic: False
+            opacity: 1
+
+
+        Button:
+            id: nafilter_btn
+            text: "  "
+            size_hint: 0.22,0.1
+            pos_hint: {"top":0.81, "x":0.7}
+            font_size: 20  
+            background_color: 94/255, 80/255, 63/255, 2/255 
+            background_normal: ''
+            disabled: False
+            on_release:
+                root.on_button1_click()
+                nafilter_label.color = 242/255, 244/255, 243/255, 1
+                filter_label.color = 242/255, 244/255, 243/255, 0
+                peakr_label.color = 242/255, 244/255, 243/255, 0
+
+        Label:
+            id: nafilter_label
+            text: "•"
+            pos_hint: {"top":0.77, "x":0.706}
+            size_hint: 0.03, 0.03
+            font_size: 70
+            background_color: 225/255, 180/255, 193/255, 2/255
+            canvas.before:
+                Color:
+                    rgba: self.background_color
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+            color: 242/255, 244/255, 243/255, 1
+            bold: True
+            italic: False
+
+        Button:
+            id: filter_btn
+            text: " "
+            size_hint: 0.22,0.1
+            pos_hint: {"top":0.69, "x":0.7}
+            font_size: 20  
+            background_color: 94/255, 80/255, 63/255, 2/255 
+            background_normal: ''
+            disabled: False
+            on_release:
+                root.on_button2_click()
+                nafilter_label.color = 242/255, 244/255, 243/255, 0
+                filter_label.color = 242/255, 244/255, 243/255, 1
+                peakr_label.color = 242/255, 244/255, 243/255, 0
+
+               
+        Label:
+            id: filter_label
+            text: "•"
+            pos_hint: {"top":0.648, "x":0.706}
+            size_hint: 0.03, 0.03
+            font_size: 70
+            background_color: 225/255, 180/255, 193/255, 2/255
+            canvas.before:
+                Color:
+                    rgba: self.background_color
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+            color: 242/255, 244/255, 243/255, 0
+            bold: True
+            italic: False
+
+        Button:
+            id: peakr_btn
+            text: "  "
+            size_hint: 0.22,0.1
+            pos_hint: {"top":0.57, "x":0.7}
+            font_size: 20  
+            background_color: 94/255, 80/255, 63/255, 2/255 
+            background_normal: ''
+            disabled: False
+            on_release:
+                root.on_button3_click()
+                nafilter_label.color = 242/255, 244/255, 243/255, 0
+                filter_label.color = 242/255, 244/255, 243/255, 0
+                peakr_label.color = 242/255, 244/255, 243/255, 1
+                
+        Label:
+            id: peakr_label
+            text: "•"
+            pos_hint: {"top":0.525, "x":0.706}
+            size_hint: 0.03, 0.03
+            font_size: 70
+            background_color: 225/255, 180/255, 193/255, 2/255
+            canvas.before:
+                Color:
+                    rgba: self.background_color
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+            color: 242/255, 244/255, 243/255, 0
+            bold: True
+            italic: False
+
+   
+
+        Label:
+            id: file_path_label
+            text: "Name file"
+            pos_hint: {"top": 0.39, "x": 0.26}
+            size_hint: 0.2, 0.07
+            font_size: 20
+            background_color: 225/255, 180/255, 193/255, 0
+            canvas.before:
+                Color:
+                    rgba: self.background_color
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+            color: 0, 0, 0, 1
+            bold: True
+            italic: False
+
+        Label:
+            id: hr_label
+            text: "350.45 bpm"
+            pos_hint: {"top": 0.315, "x": 0.22}
+            size_hint: 0.2, 0.07
+            font_size: 25
+            background_color: 225/255, 180/255, 193/255, 0
+            canvas.before:
+                Color:
+                    rgba: self.background_color
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+            color: 0, 0, 0, 1
+            bold: True
+            italic: False
+
+        Label:
+            id: average_label
+            text: "2.5 ms"
+            pos_hint: {"top": 0.258, "x": 0.2}
+            size_hint: 0.2, 0.07
+            font_size: 25
+            background_color: 225/255, 180/255, 193/255, 0
+            canvas.before:
+                Color:
+                    rgba: self.background_color
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+            color: 0, 0, 0, 1
+            bold: True
+            italic: False
+
+        Label:
+            id: sdnn_label
+            text: "3.5 ms"
+            pos_hint: {"top": 0.315, "x": 0.415}
+            size_hint: 0.2, 0.07
+            font_size: 25
+            background_color: 225/255, 180/255, 193/255, 0
+            canvas.before:
+                Color:
+                    rgba: self.background_color
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+            color: 0, 0, 0, 1
+            bold: True
+            italic: False
+
+        Label:
+            id: rmsd_label
+            text: "4.5 ms"
+            pos_hint: {"top": 0.258, "x": 0.43}
+            size_hint: 0.2, 0.07
+            font_size: 25
+            background_color: 225/255, 180/255, 193/255, 0
+            canvas.before:
+                Color:
+                    rgba: self.background_color
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+            color: 0, 0, 0, 1
+            bold: True
+            italic: False  
+
+        Label:
+            id: nn20_label
+            text: "2"
+            pos_hint: {"top": 0.2, "x": 0.13}
+            size_hint: 0.2, 0.07
+            font_size: 25
+            background_color: 225/255, 180/255, 193/255, 0
+            canvas.before:
+                Color:
+                    rgba: self.background_color
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+            color: 0, 0, 0, 1
+            bold: True
+            italic: False
+
+        Label:
+            id: pnn20_label
+            text: "0.50 %"
+            pos_hint: {"top": 0.2, "x": 0.417}
+            size_hint: 0.2, 0.07
+            font_size: 25
+            background_color: 225/255, 180/255, 193/255, 0
+            canvas.before:
+                Color:
+                    rgba: self.background_color
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+            color: 0, 0, 0, 1
+            bold: True
+            italic: False
+
+        Label:
+            id: nn6_label
+            text: "15"
+            pos_hint: {"top": 0.143, "x": 0.125}
+            size_hint: 0.2, 0.07
+            font_size: 25
+            background_color: 225/255, 180/255, 193/255, 0
+            canvas.before:
+                Color:
+                    rgba: self.background_color
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+            color: 0, 0, 0, 1
+            bold: True
+            italic: False
+        
+        Label:
+            id: pnn6_label
+            text: "1.3 %"
+            pos_hint: {"top": 0.143, "x": 0.405}
+            size_hint: 0.2, 0.07
+            font_size: 25
+            background_color: 225/255, 180/255, 193/255, 0
+            canvas.before:
+                Color:
+                    rgba: self.background_color
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+            color: 0, 0, 0, 1
+            bold: True
+            italic: False
+
+
+        Button:
+            id: poincare_btn
+            text: "   "
+            size_hint: 0.28,0.15
+            pos_hint: {"top":0.33, "x":0.67}
+            font_size: 20  
+            background_color: 94/255, 80/255, 63/255, 5/255 
+            background_normal: ''
+            disabled: False
+            on_release:
+                root.next_path()
+            
+        Button:
+            id: Back_btn
+            text: "   "
+            size_hint: 0.06,0.1
+            pos_hint: {"top":0.11, "x":0.02}
+            font_size: 20
+            background_color: 94/255, 80/255, 63/255, 5/255 
+            background_normal: ''
+            disabled: False
+            on_release:
+                root.back_path()
+
+        Button:
+            id: Info_btn
+            text: "   "
+            size_hint: 0.04,0.08
+            pos_hint: {"top":0.1, "x":0.94}
+            font_size: 20
+            background_color: 94/255, 80/255, 63/255, 5/255 
+            background_normal: ''
+            disabled: False
+            on_release:
+                #root.back_path()
+
+<PoincareWindow>:
+    name: "poincare"
+    on_size: root.on_size()
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    FloatLayout:
+        cols:1
+        size_hint: 1, 1       
+        canvas.before:
+            Color:
+                rgba: 1, 1, 1, 1 
+            Rectangle:
+                pos: self.pos
+                size: self.size
+                source: 'Screen4.png' 
+
+        BoxLayout:
+            id: ArdBox2
+            pos_hint: {"top": 0.815, "x": 0.08}
+            size_hint: 0.352, 0.46
+            background_color: 225/255, 180/255, 193/255, 1
+            canvas.before:
+                Color:
+                    rgba: self.background_color
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+            color: 0, 0, 0, 1
+            bold: True
+            italic: False
+
+        Label:
+            id: poinc1_label
+            text: "numero"
+            pos_hint: {"top": 0.63, "x": 0.30}
+            size_hint: 0.2, 0.07
+            font_size: 10
+            background_color: 225/255, 180/255, 193/255, 0
+            canvas.before:
+                Color:
+                    rgba: self.background_color
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+            color: 0, 0, 0, 1
+            bold: True
+            italic: False
+
+        Label:
+            id: poinc2_label
+            text: "numero"
+            pos_hint: {"top": 0.63, "x": 0.01}
+            size_hint: 0.2, 0.07
+            font_size: 10
+            background_color: 225/255, 180/255, 193/255, 0
+            canvas.before:
+                Color:
+                    rgba: self.background_color
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+            color: 0, 0, 0, 1
+            bold: True
+            italic: False
+
+        Label:
+            id: poinc3_label
+            text: "numero"
+            pos_hint: {"top": 0.8, "x": 0.163}
+            size_hint: 0.2, 0.07
+            font_size: 10
+            background_color: 225/255, 180/255, 193/255, 0
+            canvas.before:
+                Color:
+                    rgba: self.background_color
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+            color: 0, 0, 0, 1
+            bold: True
+            italic: False
+        
+        Label:
+            id: poinc4_label
+            text: "numero"
+            pos_hint: {"top": 0.444, "x": 0.165}
+            size_hint: 0.2, 0.07
+            font_size: 10
+            background_color: 225/255, 180/255, 193/255, 0
+            canvas.before:
+                Color:
+                    rgba: self.background_color
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+            color: 0, 0, 0, 1
+            bold: True
+            italic: False
+
+        Label:
+            id: poinc5_label
+            text: "numero"
+            pos_hint: {"top": 0.63, "x": 0.236}
+            size_hint: 0.2, 0.07
+            font_size: 10
+            background_color: 225/255, 180/255, 193/255, 0
+            canvas.before:
+                Color:
+                    rgba: self.background_color
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+            color: 0, 0, 0, 1
+            bold: True
+            italic: False
+        
+        Label:
+            id: poinc6_label
+            text: "numero"
+            pos_hint: {"top": 0.63, "x": 0.079}
+            size_hint: 0.2, 0.07
+            font_size: 10
+            background_color: 225/255, 180/255, 193/255, 0
+            canvas.before:
+                Color:
+                    rgba: self.background_color
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+            color: 0, 0, 0, 1
+            bold: True
+            italic: False
+
+        Label:
+            id: poinc7_label
+            text: "numero"
+            pos_hint: {"top": 0.717, "x": 0.163}
+            size_hint: 0.2, 0.07
+            font_size: 10
+            background_color: 225/255, 180/255, 193/255, 0
+            canvas.before:
+                Color:
+                    rgba: self.background_color
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+            color: 0, 0, 0, 1
+            bold: True
+            italic: False
+
+        Label:
+            id: poinc8_label
+            text: "numero"
+            pos_hint: {"top": 0.53, "x": 0.165}
+            size_hint: 0.2, 0.07
+            font_size: 10
+            background_color: 225/255, 180/255, 193/255, 0
+            canvas.before:
+                Color:
+                    rgba: self.background_color
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+            color: 0, 0, 0, 1
+            bold: True
+            italic: False
+
+
+        BoxLayout:
+            id: ArdBox3
+            pos_hint: {"top": 0.815, "x": 0.53}
+            size_hint: 0.352, 0.46
+            background_color: 225/255, 180/255, 193/255, 1
+            canvas.before:
+                Color:
+                    rgba: self.background_color
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+            color: 0, 0, 0, 1
+            bold: True
+            italic: False
+
+        Label:
+            id: bin1_label
+            text: "numero"
+            pos_hint: {"top": 0.44, "x": 0.48}
+            size_hint: 0.2, 0.07
+            font_size: 10
+            background_color: 225/255, 180/255, 193/255, 0
+            canvas.before:
+                Color:
+                    rgba: self.background_color
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+            color: 0, 0, 0, 1
+            bold: True
+            italic: False
+
+        Label:
+            id: bin2_label
+            text: "numero"
+            pos_hint: {"top": 0.44, "x": 0.505}
+            size_hint: 0.2, 0.07
+            font_size: 10
+            background_color: 225/255, 180/255, 193/255, 0
+            canvas.before:
+                Color:
+                    rgba: self.background_color
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+            color: 0, 0, 0, 1
+            bold: True
+            italic: False
+
+        Label:
+            id: bin3_label
+            text: "numero"
+            pos_hint: {"top": 0.44, "x": 0.532}
+            size_hint: 0.2, 0.07
+            font_size: 10
+            background_color: 225/255, 180/255, 193/255, 0
+            canvas.before:
+                Color:
+                    rgba: self.background_color
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+            color: 0, 0, 0, 1
+            bold: True
+            italic: False
+
+        Label:
+            id: bin4_label
+            text: "numero"
+            pos_hint: {"top": 0.44, "x": 0.561}
+            size_hint: 0.2, 0.07
+            font_size: 10
+            background_color: 225/255, 180/255, 193/255, 0
+            canvas.before:
+                Color:
+                    rgba: self.background_color
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+            color: 0, 0, 0, 1
+            bold: True
+            italic: False
+
+        Label:
+            id: bin5_label
+            text: "numero"
+            pos_hint: {"top": 0.44, "x": 0.59}
+            size_hint: 0.2, 0.07
+            font_size: 10
+            background_color: 225/255, 180/255, 193/255, 0
+            canvas.before:
+                Color:
+                    rgba: self.background_color
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+            color: 0, 0, 0, 1
+            bold: True
+            italic: False
+
+        Label:
+            id: bin6_label
+            text: "numero"
+            pos_hint: {"top": 0.44, "x": 0.616}
+            size_hint: 0.2, 0.07
+            font_size: 10
+            background_color: 225/255, 180/255, 193/255, 0
+            canvas.before:
+                Color:
+                    rgba: self.background_color
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+            color: 0, 0, 0, 1
+            bold: True
+            italic: False
+
+        Label:
+            id: bin7_label
+            text: "numero"
+            pos_hint: {"top": 0.44, "x": 0.645}
+            size_hint: 0.2, 0.07
+            font_size: 10
+            background_color: 225/255, 180/255, 193/255, 0
+            canvas.before:
+                Color:
+                    rgba: self.background_color
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+            color: 0, 0, 0, 1
+            bold: True
+            italic: False
+
+        Label:
+            id: bin8_label
+            text: "numero"
+            pos_hint: {"top": 0.44, "x": 0.673}
+            size_hint: 0.2, 0.07
+            font_size: 10
+            background_color: 225/255, 180/255, 193/255, 0
+            canvas.before:
+                Color:
+                    rgba: self.background_color
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+            color: 0, 0, 0, 1
+            bold: True
+            italic: False
+
+        Label:
+            id: bin9_label
+            text: "numero"
+            pos_hint: {"top": 0.44, "x": 0.70}
+            size_hint: 0.2, 0.07
+            font_size: 10
+            background_color: 225/255, 180/255, 193/255, 0
+            canvas.before:
+                Color:
+                    rgba: self.background_color
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+            color: 0, 0, 0, 1
+            bold: True
+            italic: False
+
+        Label:
+            id: bin10_label
+            text: "numero"
+            pos_hint: {"top": 0.44, "x": 0.73}
+            size_hint: 0.2, 0.07
+            font_size: 10
+            background_color: 225/255, 180/255, 193/255, 0
+            canvas.before:
+                Color:
+                    rgba: self.background_color
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+            color: 0, 0, 0, 1
+            bold: True
+            italic: False
+
+        Label:
+            id: bin11_label
+            text: "numero"
+            pos_hint: {"top": 0.5, "x": 0.48}
+            size_hint: 0.2, 0.07
+            font_size: 10
+            background_color: 225/255, 180/255, 193/255, 0
+            canvas.before:
+                Color:
+                    rgba: self.background_color
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+            color: 0, 0, 0, 1
+            bold: True
+            italic: False
+
+        Label:
+            id: bin12_label
+            text: "numero"
+            pos_hint: {"top": 0.525, "x": 0.505}
+            size_hint: 0.2, 0.07
+            font_size: 10
+            background_color: 225/255, 180/255, 193/255, 0
+            canvas.before:
+                Color:
+                    rgba: self.background_color
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+            color: 0, 0, 0, 1
+            bold: True
+            italic: False
+
+        Label:
+            id: bin13_label
+            text: "numero"
+            pos_hint: {"top": 0.55, "x": 0.532}
+            size_hint: 0.2, 0.07
+            font_size: 10
+            background_color: 225/255, 180/255, 193/255, 0
+            canvas.before:
+                Color:
+                    rgba: self.background_color
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+            color: 0, 0, 0, 1
+            bold: True
+            italic: False
+
+        Label:
+            id: bin14_label
+            text: "numero"
+            pos_hint: {"top": 0.575, "x": 0.561}
+            size_hint: 0.2, 0.07
+            font_size: 10
+            background_color: 225/255, 180/255, 193/255, 0
+            canvas.before:
+                Color:
+                    rgba: self.background_color
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+            color: 0, 0, 0, 1
+            bold: True
+            italic: False
+
+        Label:
+            id: bin15_label
+            text: "numero"
+            pos_hint: {"top": 0.6, "x": 0.59}
+            size_hint: 0.2, 0.07
+            font_size: 10
+            background_color: 225/255, 180/255, 193/255, 0
+            canvas.before:
+                Color:
+                    rgba: self.background_color
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+            color: 0, 0, 0, 1
+            bold: True
+            italic: False
+
+        Label:
+            id: bin16_label
+            text: "numero"
+            pos_hint: {"top": 0.625, "x": 0.616}
+            size_hint: 0.2, 0.07
+            font_size: 10
+            background_color: 225/255, 180/255, 193/255, 0
+            canvas.before:
+                Color:
+                    rgba: self.background_color
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+            color: 0, 0, 0, 1
+            bold: True
+            italic: False
+
+        Label:
+            id: bin17_label
+            text: "numero"
+            pos_hint: {"top": 0.6, "x": 0.645}
+            size_hint: 0.2, 0.07
+            font_size: 10
+            background_color: 225/255, 180/255, 193/255, 0
+            canvas.before:
+                Color:
+                    rgba: self.background_color
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+            color: 0, 0, 0, 1
+            bold: True
+            italic: False
+
+        Label:
+            id: bin18_label
+            text: "numero"
+            pos_hint: {"top": 0.575, "x": 0.673}
+            size_hint: 0.2, 0.07
+            font_size: 10
+            background_color: 225/255, 180/255, 193/255, 0
+            canvas.before:
+                Color:
+                    rgba: self.background_color
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+            color: 0, 0, 0, 1
+            bold: True
+            italic: False
+
+        Label:
+            id: bin19_label
+            text: "numero"
+            pos_hint: {"top": 0.525, "x": 0.70}
+            size_hint: 0.2, 0.07
+            font_size: 10
+            background_color: 225/255, 180/255, 193/255, 0
+            canvas.before:
+                Color:
+                    rgba: self.background_color
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+            color: 0, 0, 0, 1
+            bold: True
+            italic: False
+
+        Label:
+            id: bin20_label
+            text: "numero"
+            pos_hint: {"top": 0.5, "x": 0.73}
+            size_hint: 0.2, 0.07
+            font_size: 10
+            background_color: 225/255, 180/255, 193/255, 0
+            canvas.before:
+                Color:
+                    rgba: self.background_color
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+            color: 0, 0, 0, 1
+            bold: True
+            italic: False
+
+
+        Button:
+            id: Back_btn
+            text: "   "
+            size_hint: 0.06,0.1
+            pos_hint: {"top":0.11, "x":0.02}
+            font_size: 20
+            background_color: 94/255, 80/255, 63/255, 5/255 
+            background_normal: ''
+            disabled: False
+            on_release:
+                root.back_path()
+
+        Button:
+            id: Info_btn
+            text: "   "
+            size_hint: 0.04,0.08
+            pos_hint: {"top":0.1, "x":0.94}
+            font_size: 20
+            background_color: 94/255, 80/255, 63/255, 5/255 
+            background_normal: ''
+            disabled: False
+            on_release:
+                #root.back_path()
+        
