@@ -1,0 +1,23 @@
+name: 'Set environment variables'
+description: 'Configures environment variables for a job'
+inputs:
+  dotenv:
+    description: 'Path to variable file. Defaults to .github/github.env if none specified.'
+    required: false
+    default: .github/github.env
+runs:
+  using: "composite"
+  steps:
+    - run: |
+        # Load variables from dotenv file
+        set -a && . ${{ inputs.dotenv }} && set +a
+        # Remove comments, substitute and export variables
+        cat ${{ inputs.dotenv }} | sed '/^#/d' | envsubst >> $GITHUB_ENV
+      shell: bash
+    - run: |
+        # Set release branch to default branch if not set
+        if [ -z "$RELEASE_BRANCH" ];
+        then
+          echo "RELEASE_BRANCH=${{ github.event.repository.default_branch }}" >> $GITHUB_ENV
+        fi
+      shell: bash

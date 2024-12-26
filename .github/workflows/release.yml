@@ -1,0 +1,75 @@
+name: Release workflow
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  generate-metadata:
+    uses: ./.github/workflows/create-metadata.yml
+  create-release:
+    runs-on: ubuntu-22.04
+    environment: facile-rs
+    needs: generate-metadata
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setvars
+      - uses: actions/download-artifact@v4
+        with:
+          name: DataCite-file
+          pattern: '*.xml'
+      - name: Rename DataCite file
+        run: mv ${{ env.DATACITE_PATH }} ${{ env.DATACITE_RELEASE }}
+      - name: Retrieve DOI
+        run: |
+          DOI_URL=`jq -r ".[\"@id\"]" ${CODEMETA_LOCATION}`
+          echo DOI_URL=$DOI_URL >> $GITHUB_ENV
+          echo DOI=${DOI_URL#"https://doi.org/"} >> $GITHUB_ENV
+      - name: Update release description
+        run: |
+          if [ $ENABLE_RADAR = true ];
+          then
+            RELEASE_DESCRIPTION="${RELEASE_DESCRIPTION}<br/>Find the archived version of the ${CI_COMMIT_TAG} release in the RADAR4KIT repository - [doi:${DOI}](${DOI_URL}).";
+          elif [ $ENABLE_ZENODO = true ];
+          then
+            RELEASE_DESCRIPTION="${RELEASE_DESCRIPTION}<br/>Find the archived version of the ${CI_COMMIT_TAG} release on Zenodo - [doi:${DOI}](${DOI_URL}).";
+          fi
+          echo RELEASE_DESCRIPTION=$RELEASE_DESCRIPTION >> $GITHUB_ENV
+      - name: Create GitHub release
+        env:
+          tag: ${{ github.ref_name }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$tag" \
+              --repo="$GITHUB_REPOSITORY" \
+              --notes="$RELEASE_DESCRIPTION" \
+              ${{ env.DATACITE_RELEASE }}
+      - name: Install FACILE-RS
+        run: pip install FACILE-RS==${{ env.FACILE_RS_VERSION }}
+      - name: Upload on Zenodo
+        run: |
+          if [ $ENABLE_ZENODO = true ];
+          then
+              facile-rs zenodo upload \
+                ${{ env.RELEASE_ARCHIVE_URL }} \
+                ${{ env.DATACITE_RELEASE }}
+          fi
+        env:
+          ZENODO_TOKEN: ${{ secrets.ZENODO_TOKEN }}
+      - name: Upload on RADAR
+        run: |
+          if [ $ENABLE_RADAR = true ];
+          then
+              facile-rs radar upload \
+                ${{ env.RELEASE_ARCHIVE_URL }} \
+                ${{ env.DATACITE_RELEASE }}
+          fi
+        env:
+          RADAR_EMAIL: ${{ secrets.RADAR_EMAIL }}
+          RADAR_WORKSPACE_ID: ${{ secrets.RADAR_WORKSPACE_ID }}
+          RADAR_URL: ${{ secrets.RADAR_URL }}
+          RADAR_REDIRECT_URL: ${{ secrets.RADAR_REDIRECT_URL }}
+          RADAR_CLIENT_ID: ${{ secrets.RADAR_CLIENT_ID }}
+          RADAR_CLIENT_SECRET: ${{ secrets.RADAR_CLIENT_SECRET }}
+          RADAR_USERNAME: ${{ secrets.RADAR_USERNAME }}
+          RADAR_PASSWORD: ${{ secrets.RADAR_PASSWORD }}

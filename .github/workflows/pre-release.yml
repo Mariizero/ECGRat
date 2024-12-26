@@ -1,0 +1,71 @@
+name: Pre-release workflow
+on:
+  push:
+    tags:
+      - 'pre-v*'
+
+jobs:
+  # Create metadata files and export them as artifacts
+  generate-metadata:
+    uses: ./.github/workflows/create-metadata.yml
+  prepare-release:
+    runs-on: ubuntu-22.04
+    environment: facile-rs
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ssh-key: ${{ secrets.PRIVATE_KEY }}
+      - uses: ./.github/actions/setvars
+      - name: Install FACILE-RS
+        run: pip install FACILE-RS==${{ env.FACILE_RS_VERSION }}
+      - name: Get version
+        # Extract <version> from refs/tags/pre-<version>
+        run: echo "VERSION=$(echo $GITHUB_REF | grep -oP '^refs/tags/pre-\K.*$')" >> $GITHUB_ENV
+      - name: Configure git
+        run: |
+          git config --global user.name "${{ github.actor }}"
+          git config --global user.email "${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com"
+      - run: echo "Preparing release of $VERSION"
+      - name: Prepare release
+        run: facile-rs release prepare
+      - name: Prepare Zenodo release
+        run: |
+          if [ $ENABLE_ZENODO = true ];
+          then
+              echo "preparing Zenodo release, make sure the Zenodo token is defined as gitlab CI/CD variables";
+              facile-rs zenodo prepare
+          else
+              echo "Zenodo skipped, change ENABLE_ZENODO in .gitlab-ci.yml if you want to do a Zenodo release";
+          fi
+        env:
+          ZENODO_TOKEN: ${{ secrets.ZENODO_TOKEN }}
+      - name: Prepare RADAR release
+        run: |
+          if [ $ENABLE_RADAR = true ];
+          then
+              echo "preparing RADAR release, make sure the credentials are defined as gitlab CI/CD variables";
+              facile-rs radar prepare;
+          else
+              echo "RADAR skipped, change ENABLE_RADAR in .gitlab-ci.yml if you have the credentials";
+          fi
+        env:
+          RADAR_EMAIL: ${{ secrets.RADAR_EMAIL }}
+          RADAR_WORKSPACE_ID: ${{ secrets.RADAR_WORKSPACE_ID }}
+          RADAR_URL: ${{ secrets.RADAR_URL }}
+          RADAR_REDIRECT_URL: ${{ secrets.RADAR_REDIRECT_URL }}
+          RADAR_CLIENT_ID: ${{ secrets.RADAR_CLIENT_ID }}
+          RADAR_CLIENT_SECRET: ${{ secrets.RADAR_CLIENT_SECRET }}
+          RADAR_USERNAME: ${{ secrets.RADAR_USERNAME }}
+          RADAR_PASSWORD: ${{ secrets.RADAR_PASSWORD }}
+      - name: Generate CFF file
+        run: facile-rs cff create
+      - name: Push updated metadata
+        run : |
+          git add ${CODEMETA_LOCATION} ${CFF_PATH}
+          # Commit only if there are changes
+          git diff-index --quiet HEAD || git commit -m "Release ${VERSION}"
+          git push origin HEAD:${RELEASE_BRANCH}
+      - name: Create release tag
+        run: |
+          git tag $VERSION
+          git push origin HEAD:${RELEASE_BRANCH} --tags

@@ -1,0 +1,53 @@
+name: Create metadata files
+on:
+  push:
+    branches:
+      - '**'
+  workflow_call:
+
+jobs:
+  # Create CFF file and export it as an artifact
+  create-cff:
+    runs-on: ubuntu-22.04
+    environment: facile-rs
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ssh-key: ${{ secrets.PRIVATE_KEY }}
+      - uses: ./.github/actions/setvars
+      - name: Install FACILE-RS
+        run: pip install FACILE-RS==${{ env.FACILE_RS_VERSION }}
+      - name: Configure git
+        run: |
+          git config --global user.name "${{ github.actor }}"
+          git config --global user.email "${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com"
+      - name: Create CFF file
+        run: facile-rs cff create
+      - name: Push CFF file
+        run: |
+          if [ $PUSH_CFF = true ] && [ $GITHUB_REF_TYPE = 'branch' ];
+          then
+              git add ${{ env.CFF_PATH }}
+              git diff-index --quiet HEAD || git commit -m "Update CFF file"
+              git push -o ci.skip
+          fi
+      - name: Upload CFF file as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: CFF-file
+          path: ${{ env.CFF_PATH }}
+  # Create DataCite XML and export it as an artifact
+  create-datacite:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setvars
+      - name: Install FACILE-RS
+        run: pip install FACILE-RS==${{ env.FACILE_RS_VERSION }}
+      - name: Create DataCite metadata
+        run: facile-rs datacite create
+      - name: Upload DataCite metadata as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: DataCite-file
+          path: ${{ env.DATACITE_PATH }}
